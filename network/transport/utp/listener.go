@@ -6,7 +6,7 @@ import (
 	"net"
 	"time"
 
-	"github.com/micro/go-micro/transport"
+	"github.com/micro/go-micro/network/transport"
 	"github.com/micro/go-micro/util/log"
 )
 

@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/micro/go-micro/config/cmd"
-	"github.com/micro/go-micro/transport"
+	"github.com/micro/go-micro/network/transport"
 	maddr "github.com/micro/go-micro/util/addr"
 	"github.com/micro/go-micro/util/log"
 	mnet "github.com/micro/go-micro/util/net"

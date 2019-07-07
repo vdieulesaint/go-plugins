@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/micro/go-micro/config/cmd"
-	"github.com/micro/go-micro/transport"
+	"github.com/micro/go-micro/network/transport"
 )
 
 type utpTransport struct {
