@@ -33,7 +33,7 @@ func (j *jsonCodec) Write(m *codec.Message, b interface{}) error {
 		return j.c.Write(m, b)
 	case codec.Response:
 		return j.s.Write(m, b)
-	case codec.Publication:
+	case codec.Event:
 		data, err := json.Marshal(b)
 		if err != nil {
 			return err
@@ -54,7 +54,7 @@ func (j *jsonCodec) ReadHeader(m *codec.Message, mt codec.MessageType) error {
 		return j.s.ReadHeader(m)
 	case codec.Response:
 		return j.c.ReadHeader(m)
-	case codec.Publication:
+	case codec.Event:
 		io.Copy(j.buf, j.rwc)
 	default:
 		return fmt.Errorf("Unrecognised message type: %v", mt)
@@ -68,7 +68,7 @@ func (j *jsonCodec) ReadBody(b interface{}) error {
 		return j.s.ReadBody(b)
 	case codec.Response:
 		return j.c.ReadBody(b)
-	case codec.Publication:
+	case codec.Event:
 		if b != nil {
 			return json.Unmarshal(j.buf.Bytes(), b)
 		}

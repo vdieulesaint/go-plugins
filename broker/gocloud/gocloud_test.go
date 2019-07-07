@@ -40,7 +40,7 @@ func publishN(b broker.Broker, topic string, n int) error {
 
 func receiveN(b broker.Broker, topic string, n int, donec chan struct{}) (broker.Subscriber, error) {
 	r := 0
-	handler := func(p broker.Publication) error {
+	handler := func(p broker.Event) error {
 		r++
 		p.Ack()
 		if r >= n {

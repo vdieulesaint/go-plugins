@@ -34,7 +34,7 @@ func (b *bsonCodec) Write(m *codec.Message, body interface{}) error {
 		return b.c.Write(m, body)
 	case codec.Response:
 		return b.s.Write(m, body)
-	case codec.Publication:
+	case codec.Event:
 		data, err := bson.Marshal(body)
 		if err != nil {
 			return err
@@ -55,7 +55,7 @@ func (b *bsonCodec) ReadHeader(m *codec.Message, mt codec.MessageType) error {
 		return b.s.ReadHeader(m)
 	case codec.Response:
 		return b.c.ReadHeader(m)
-	case codec.Publication:
+	case codec.Event:
 		io.Copy(b.buf, b.rwc)
 	default:
 		return fmt.Errorf("Unrecognised message type: %v", mt)
@@ -69,7 +69,7 @@ func (b *bsonCodec) ReadBody(body interface{}) error {
 		return b.s.ReadBody(body)
 	case codec.Response:
 		return b.c.ReadBody(body)
-	case codec.Publication:
+	case codec.Event:
 		if body != nil {
 			return bson.Unmarshal(b.buf.Bytes(), body)
 		}

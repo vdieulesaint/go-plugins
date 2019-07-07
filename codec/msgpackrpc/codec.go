@@ -50,7 +50,7 @@ func (c *msgpackCodec) ReadHeader(m *codec.Message, mt codec.MessageType) error 
 		m.Id = h.ID
 		m.Error = h.Error
 
-	case codec.Publication:
+	case codec.Event:
 		var h Notification
 
 		if err := msgp.Decode(c.rwc, &h); err != nil {
@@ -82,7 +82,7 @@ func (c *msgpackCodec) ReadBody(v interface{}) error {
 	}
 
 	switch c.mt {
-	case codec.Request, codec.Response, codec.Publication:
+	case codec.Request, codec.Response, codec.Event:
 		return decodeBody(r, v)
 	default:
 		return fmt.Errorf("Unrecognized message type: %v", c.mt)
@@ -112,7 +112,7 @@ func (c *msgpackCodec) Write(m *codec.Message, b interface{}) error {
 
 		return msgp.Encode(c.rwc, &h)
 
-	case codec.Publication:
+	case codec.Event:
 		h := Notification{
 			Method: m.Endpoint,
 			Body:   b,
