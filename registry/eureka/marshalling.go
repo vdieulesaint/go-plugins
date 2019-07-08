@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net"
+	"strconv"
 	"strings"
 
 	"github.com/hudl/fargo"
@@ -52,8 +54,7 @@ func appToService(app *fargo.Application) []*registry.Service {
 		// append node
 		service.Nodes = append(service.Nodes, &registry.Node{
 			Id:       id,
-			Address:  addr,
-			Port:     port,
+			Address:  fmt.Sprintf("%s:%d", addr, port),
 			Metadata: metadata,
 		})
 
@@ -77,6 +78,8 @@ func serviceToInstance(service *registry.Service) (*fargo.Instance, error) {
 	}
 
 	node := service.Nodes[0]
+	_, pt, _ := net.SplitHostPort(node.Address)
+	port, _ := strconv.Atoi(pt)
 
 	instance := &fargo.Instance{
 		App:              service.Name,
@@ -84,7 +87,7 @@ func serviceToInstance(service *registry.Service) (*fargo.Instance, error) {
 		IPAddr:           node.Address,
 		VipAddress:       node.Address,
 		SecureVipAddress: node.Address,
-		Port:             node.Port,
+		Port:             port,
 		Status:           fargo.UP,
 		UniqueID: func(i fargo.Instance) string {
 			return fmt.Sprintf("%s:%s", node.Address, node.Id)

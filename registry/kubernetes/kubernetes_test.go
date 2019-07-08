@@ -2,6 +2,7 @@ package kubernetes
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"reflect"
 	"strconv"
@@ -54,8 +55,7 @@ func register(r registry.Registry, podName string, svc *registry.Service) {
 
 	svc.Nodes = append(svc.Nodes, &registry.Node{
 		Id:       svc.Name + ":" + pod.Metadata.Name,
-		Address:  pod.Status.PodIP,
-		Port:     80,
+		Address:  fmt.Sprintf("%s:%d", pod.Status.PodIP, 80),
 		Metadata: map[string]string{},
 	})
 

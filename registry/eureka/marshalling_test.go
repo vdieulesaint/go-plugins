@@ -13,14 +13,12 @@ func TestServiceToInstance(t *testing.T) {
 	nodes := []*registry.Node{
 		&registry.Node{
 			Id:       "node0",
-			Address:  "node0.example.com",
-			Port:     1234,
+			Address:  "node0.example.com:1234",
 			Metadata: map[string]string{"foo": "bar"},
 		},
 		&registry.Node{
 			Id:      "node1",
-			Address: "node1.example.com",
-			Port:    9876,
+			Address: "node1.example.com:9876",
 		},
 	}
 
@@ -69,7 +67,6 @@ func TestServiceToInstance(t *testing.T) {
 		{"instance.IPAddr", nodes[0].Address, instance.IPAddr},
 		{"instance.VipAddress", nodes[0].Address, instance.VipAddress},
 		{"instance.SecureVipAddress", nodes[0].Address, instance.SecureVipAddress},
-		{"instance.Port", nodes[0].Port, instance.Port},
 		{"instance.Status", fargo.UP, instance.Status},
 		{"instance.UniqueID()", expectedUniqueID, instance.UniqueID(*instance)},
 		{"instance.DataCenteInfo.Name", fargo.MyOwn, instance.DataCenterInfo.Name},

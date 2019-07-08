@@ -430,7 +430,7 @@ func (h *grpcBroker) Publish(topic string, msg *broker.Message, opts ...broker.P
 		}
 
 		// dial grpc connection
-		c, err := grpc.Dial(fmt.Sprintf("%s:%d", node.Address, node.Port), opts...)
+		c, err := grpc.Dial(node.Address, opts...)
 		if err != nil {
 			log.Logf(err.Error())
 			return
@@ -490,8 +490,7 @@ func (h *grpcBroker) Subscribe(topic string, handler broker.Handler, opts ...bro
 	// register service
 	node := &registry.Node{
 		Id:      id,
-		Address: addr,
-		Port:    port,
+		Address: fmt.Sprintf("%s:%d", addr, port),
 		Metadata: map[string]string{
 			"secure": fmt.Sprintf("%t", secure),
 		},
