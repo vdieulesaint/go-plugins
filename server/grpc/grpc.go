@@ -3,13 +3,8 @@
 package grpc
 
 import (
-	"github.com/micro/go-micro/server"
 	"github.com/micro/go-micro/server/grpc"
 )
-
-// We use this to wrap any debug handlers so we preserve the signature Debug.{Method}
-// Deprecated: use `github.com/micro/go-micro/server/grpc` instead
-type Debug = grpc.Debug
 
 var (
 	// DefaultMaxMsgSize define maximum message size that server can send
