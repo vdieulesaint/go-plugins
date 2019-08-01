@@ -9,10 +9,11 @@ import (
 )
 
 type zookeeperWatcher struct {
-	wo      registry.WatchOptions
-	client  *zk.Conn
-	stop    chan bool
-	results chan result
+	wo       registry.WatchOptions
+	client   *zk.Conn
+	stop     chan bool
+	results  chan result
+	respChan chan watchResponse
 }
 
 type watchResponse struct {
@@ -33,22 +34,34 @@ func newZookeeperWatcher(r *zookeeperRegistry, opts ...registry.WatchOption) (re
 	}
 
 	zw := &zookeeperWatcher{
-		wo:      wo,
-		client:  r.client,
-		stop:    make(chan bool),
-		results: make(chan result),
+		wo:       wo,
+		client:   r.client,
+		stop:     make(chan bool),
+		results:  make(chan result),
+		respChan: make(chan watchResponse),
 	}
 
 	go zw.watch()
 	return zw, nil
 }
 
-func (zw *zookeeperWatcher) watchDir(key string, respChan chan watchResponse) {
+func (zw *zookeeperWatcher) writeRespChan(resp *watchResponse) {
+	if resp == nil {
+		return
+	}
+	select {
+	case <-zw.stop:
+	default:
+		zw.respChan <- *resp
+	}
+}
+
+func (zw *zookeeperWatcher) watchDir(key string) {
 	for {
 		// get current children for a key
 		children, _, childEventCh, err := zw.client.ChildrenW(key)
 		if err != nil {
-			respChan <- watchResponse{zk.Event{}, nil, err}
+			zw.writeRespChan(&watchResponse{zk.Event{}, nil, err})
 			return
 		}
 
@@ -60,7 +73,7 @@ func (zw *zookeeperWatcher) watchDir(key string, respChan chan watchResponse) {
 
 			newChildren, _, err := zw.client.Children(e.Path)
 			if err != nil {
-				respChan <- watchResponse{e, nil, err}
+				zw.writeRespChan(&watchResponse{e, nil, err})
 				return
 			}
 
@@ -74,12 +87,12 @@ func (zw *zookeeperWatcher) watchDir(key string, respChan chan watchResponse) {
 
 				if key == prefix {
 					// a new service was created under prefix
-					go zw.watchDir(newNode, respChan)
+					go zw.watchDir(newNode)
 
 					nodes, _, _ := zw.client.Children(newNode)
 					for _, node := range nodes {
 						n := path.Join(newNode, node)
-						go zw.watchKey(n, respChan)
+						go zw.watchKey(n)
 						s, _, err := zw.client.Get(n)
 						e.Type = zk.EventNodeCreated
 
@@ -88,10 +101,10 @@ func (zw *zookeeperWatcher) watchDir(key string, respChan chan watchResponse) {
 							continue
 						}
 
-						respChan <- watchResponse{e, srv, err}
+						zw.writeRespChan(&watchResponse{e, srv, err})
 					}
 				} else {
-					go zw.watchKey(newNode, respChan)
+					go zw.watchKey(newNode)
 					s, _, err := zw.client.Get(newNode)
 					e.Type = zk.EventNodeCreated
 
@@ -100,7 +113,7 @@ func (zw *zookeeperWatcher) watchDir(key string, respChan chan watchResponse) {
 						continue
 					}
 
-					respChan <- watchResponse{e, srv, err}
+					zw.writeRespChan(&watchResponse{e, srv, err})
 				}
 			}
 		case <-zw.stop:
@@ -110,11 +123,11 @@ func (zw *zookeeperWatcher) watchDir(key string, respChan chan watchResponse) {
 	}
 }
 
-func (zw *zookeeperWatcher) watchKey(key string, respChan chan watchResponse) {
+func (zw *zookeeperWatcher) watchKey(key string) {
 	for {
 		s, _, keyEventCh, err := zw.client.GetW(key)
 		if err != nil {
-			respChan <- watchResponse{zk.Event{}, nil, err}
+			zw.writeRespChan(&watchResponse{zk.Event{}, nil, err})
 			return
 		}
 
@@ -132,7 +145,7 @@ func (zw *zookeeperWatcher) watchKey(key string, respChan chan watchResponse) {
 					continue
 				}
 
-				respChan <- watchResponse{e, srv, err}
+				zw.writeRespChan(&watchResponse{e, srv, err})
 			}
 			if e.Type == zk.EventNodeDeleted {
 				//The Node was deleted - stop watching
@@ -156,21 +169,20 @@ func (zw *zookeeperWatcher) watch() {
 	if err != nil {
 		zw.results <- result{nil, err}
 	}
-	respChan := make(chan watchResponse)
 
 	//watch the prefix for new child nodes
-	go zw.watchDir(watchPath, respChan)
+	go zw.watchDir(watchPath)
 
 	//watch every service
 	for _, service := range services {
 		sPath := childPath(watchPath, service)
-		go zw.watchDir(sPath, respChan)
+		go zw.watchDir(sPath)
 		children, _, err := zw.client.Children(sPath)
 		if err != nil {
 			zw.results <- result{nil, err}
 		}
 		for _, c := range children {
-			go zw.watchKey(path.Join(sPath, c), respChan)
+			go zw.watchKey(path.Join(sPath, c))
 		}
 	}
 
@@ -180,7 +192,7 @@ func (zw *zookeeperWatcher) watch() {
 		select {
 		case <-zw.stop:
 			return
-		case rsp := <-respChan:
+		case rsp := <-zw.respChan:
 			if rsp.err != nil {
 				zw.results <- result{nil, err}
 				continue
