@@ -210,7 +210,8 @@ func (b *awsServices) Connect() error {
 	snsConfig := b.getSNSConfig()
 	b.svcSns = sns.New(b.sess, snsConfig)
 
-	svcSts := sts.New(b.sess)
+	stsConfig := b.getSTSConfig()
+	svcSts := sts.New(b.sess, stsConfig)
 
 	input := &sts.GetCallerIdentityInput{}
 
@@ -417,6 +418,14 @@ func (b *awsServices) getSNSConfig() *aws.Config {
 
 func (b *awsServices) getSQSConfig() *aws.Config {
 	raw := b.options.Context.Value(sqsConfigKey{})
+	if raw != nil {
+		return raw.(*aws.Config)
+	}
+	return nil
+}
+
+func (b *awsServices) getSTSConfig() *aws.Config {
+	raw := b.options.Context.Value(stsConfigKey{})
 	if raw != nil {
 		return raw.(*aws.Config)
 	}
