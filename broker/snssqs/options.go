@@ -40,11 +40,11 @@ func ValidateOnPublish(validate bool) broker.PublishOption {
 }
 
 // SNSConfig add AWS config options to the sns client
-func SNSConfig(c *aws.Config) broker.PublishOption {
-	return setPublishOption(snsConfigKey{}, c)
+func SNSConfig(c *aws.Config) broker.Option {
+	return setBrokerOption(snsConfigKey{}, c)
 }
 
 // SQSConfig add AWS config options to the sqs client
-func SQSConfig(c *aws.Config) broker.SubscribeOption {
-	return setSubscribeOption(sqsConfigKey{}, c)
+func SQSConfig(c *aws.Config) broker.Option {
+	return setBrokerOption(sqsConfigKey{}, c)
 }
