@@ -2,7 +2,7 @@ package redis
 
 import (
 	"github.com/micro/go-micro/config/options"
-	"github.com/micro/go-micro/data/store"
+	"github.com/micro/go-micro/store"
 	redis "gopkg.in/redis.v3"
 )
 
@@ -44,7 +44,7 @@ func (r *rkv) Write(record *store.Record) error {
 	return r.Client.Set(record.Key, record.Value, record.Expiry).Err()
 }
 
-func (r *rkv) Dump() ([]*store.Record, error) {
+func (r *rkv) Sync() ([]*store.Record, error) {
 	keys, err := r.Client.Keys("*").Result()
 	if err != nil {
 		return nil, err

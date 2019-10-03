@@ -22,10 +22,8 @@ require (
 	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
 	github.com/clbanning/x2j v0.0.0-20180326210544-5e605d46809c // indirect
 	github.com/coreos/bbolt v1.3.3 // indirect
-	github.com/coreos/etcd v3.3.13+incompatible
+	github.com/coreos/etcd v3.3.15+incompatible
 	github.com/coreos/go-semver v0.3.0 // indirect
-	github.com/coreos/go-systemd v0.0.0-20190719114852-fd7a80b32e1f // indirect
-	github.com/coreos/pkg v0.0.0-20180928190104-399ea9e2e55f // indirect
 	github.com/eapache/go-resiliency v1.2.0 // indirect
 	github.com/eclipse/paho.mqtt.golang v1.2.0
 	github.com/franela/goblin v0.0.0-20181003173013-ead4ad1d2727 // indirect
@@ -42,12 +40,13 @@ require (
 	github.com/google/wire v0.3.0 // indirect
 	github.com/googleapis/gnostic v0.3.0 // indirect
 	github.com/gopherjs/gopherjs v0.0.0-20190430165422-3e4dfb77656c // indirect
-	github.com/gorilla/websocket v1.4.0
+	github.com/gorilla/websocket v1.4.1
 	github.com/grpc-ecosystem/go-grpc-middleware v1.0.1-0.20190118093823-f849b5445de4 // indirect
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.9.5 // indirect
+	github.com/hashicorp/consul/api v1.2.0
 	github.com/hashicorp/go-hclog v0.9.2 // indirect
-	github.com/hashicorp/memberlist v0.1.4
+	github.com/hashicorp/memberlist v0.1.5
 	github.com/hashicorp/raft v1.1.1 // indirect
 	github.com/hashicorp/vault v1.1.4
 	github.com/huandu/xstrings v1.2.0 // indirect
@@ -57,8 +56,8 @@ require (
 	github.com/juju/ratelimit v1.0.1
 	github.com/lib/pq v1.2.0 // indirect
 	github.com/micro/cli v0.2.0
-	github.com/micro/go-micro v1.11.0
-	github.com/micro/micro v1.8.0
+	github.com/micro/go-micro v1.11.1-0.20191003085625-b5f33b2aaa61
+	github.com/micro/micro v1.11.0
 	github.com/minio/highwayhash v1.0.0
 	github.com/mitchellh/hashstructure v1.0.0
 	github.com/nats-io/jwt v0.2.12 // indirect
@@ -88,18 +87,15 @@ require (
 	github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2 // indirect
 	go.etcd.io/bbolt v1.3.3 // indirect
 	go.opencensus.io v0.22.0
-	go.uber.org/atomic v1.4.0 // indirect
-	go.uber.org/multierr v1.1.0 // indirect
 	go.uber.org/ratelimit v0.1.0
-	go.uber.org/zap v1.10.0 // indirect
 	gocloud.dev v0.15.0
 	gocloud.dev/pubsub/rabbitpubsub v0.15.0
-	golang.org/x/net v0.0.0-20190724013045-ca1201d0de80
+	golang.org/x/net v0.0.0-20190930134127-c5a3c61f89f3
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	golang.org/x/text v0.3.2
 	google.golang.org/api v0.8.0
 	google.golang.org/genproto v0.0.0-20190801165951-fa694d86fc64
-	google.golang.org/grpc v1.22.1
+	google.golang.org/grpc v1.24.0
 	gopkg.in/DataDog/dd-trace-go.v1 v1.16.1
 	gopkg.in/asn1-ber.v1 v1.0.0-20181015200546-f715ec2f112d // indirect
 	gopkg.in/bsm/ratelimit.v1 v1.0.0-20160220154919-db14e161995a // indirect

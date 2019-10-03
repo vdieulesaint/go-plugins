@@ -11,7 +11,7 @@ import (
 
 	mc "github.com/bradfitz/gomemcache/memcache"
 	"github.com/micro/go-micro/config/options"
-	"github.com/micro/go-micro/data/store"
+	"github.com/micro/go-micro/store"
 )
 
 type mkv struct {
@@ -51,7 +51,7 @@ func (m *mkv) Write(record *store.Record) error {
 	})
 }
 
-func (m *mkv) Dump() ([]*store.Record, error) {
+func (m *mkv) Sync() ([]*store.Record, error) {
 	// stats
 	// cachedump
 	// get keys
