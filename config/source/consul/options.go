@@ -1,25 +1,21 @@
-package etcd
+package consul
 
 import (
 	"context"
-	"time"
 
+	"github.com/hashicorp/consul/api"
 	"github.com/micro/go-micro/config/source"
 )
 
 type addressKey struct{}
 type prefixKey struct{}
 type stripPrefixKey struct{}
-type authKey struct{}
-type dialTimeoutKey struct{}
+type dcKey struct{}
+type tokenKey struct{}
+type configKey struct{}
 
-type authCreds struct {
-	Username string
-	Password string
-}
-
-// WithAddress sets the etcd address
-func WithAddress(a ...string) source.Option {
+// WithAddress sets the consul address
+func WithAddress(a string) source.Option {
 	return func(o *source.Options) {
 		if o.Context == nil {
 			o.Context = context.Background()
@@ -49,22 +45,31 @@ func StripPrefix(strip bool) source.Option {
 	}
 }
 
-// Auth allows you to specify username/password
-func Auth(username, password string) source.Option {
+func WithDatacenter(p string) source.Option {
 	return func(o *source.Options) {
 		if o.Context == nil {
 			o.Context = context.Background()
 		}
-		o.Context = context.WithValue(o.Context, authKey{}, &authCreds{Username: username, Password: password})
+		o.Context = context.WithValue(o.Context, dcKey{}, p)
 	}
 }
 
-// WithDialTimeout set the time out for dialing to etcd
-func WithDialTimeout(timeout time.Duration) source.Option {
+// WithToken sets the key token to use
+func WithToken(p string) source.Option {
 	return func(o *source.Options) {
 		if o.Context == nil {
 			o.Context = context.Background()
 		}
-		o.Context = context.WithValue(o.Context, dialTimeoutKey{}, timeout)
+		o.Context = context.WithValue(o.Context, tokenKey{}, p)
+	}
+}
+
+// WithConfig set consul-specific options
+func WithConfig(c *api.Config) source.Option {
+	return func(o *source.Options) {
+		if o.Context == nil {
+			o.Context = context.Background()
+		}
+		o.Context = context.WithValue(o.Context, configKey{}, c)
 	}
 }
