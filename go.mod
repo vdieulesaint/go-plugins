@@ -56,7 +56,7 @@ require (
 	github.com/juju/ratelimit v1.0.1
 	github.com/lib/pq v1.2.0 // indirect
 	github.com/micro/cli v0.2.0
-	github.com/micro/go-micro v1.11.1-0.20191003102235-af5d7a342091
+	github.com/micro/go-micro v1.11.1-0.20191003102624-b1163b9dee9f
 	github.com/micro/micro v1.11.0
 	github.com/minio/highwayhash v1.0.0
 	github.com/mitchellh/hashstructure v1.0.0
