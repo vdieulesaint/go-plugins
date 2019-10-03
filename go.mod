@@ -2,24 +2,16 @@ module github.com/micro/go-plugins
 
 require (
 	cloud.google.com/go v0.44.0
-	contrib.go.opencensus.io/exporter/ocagent v0.5.1 // indirect
-	contrib.go.opencensus.io/exporter/stackdriver v0.12.4 // indirect
-	contrib.go.opencensus.io/resource v0.1.2 // indirect
 	github.com/Azure/azure-pipeline-go v0.2.2 // indirect
-	github.com/Azure/azure-sdk-for-go v32.0.0+incompatible // indirect
-	github.com/Azure/azure-service-bus-go v0.9.1 // indirect
 	github.com/Azure/azure-storage-blob-go v0.7.0 // indirect
-	github.com/Azure/go-autorest v12.3.0+incompatible // indirect
+	github.com/Azure/go-autorest/autorest/adal v0.6.0 // indirect
 	github.com/DataDog/zstd v1.4.1 // indirect
-	github.com/GoogleCloudPlatform/cloudsql-proxy v0.0.0-20190725230627-253d1edd4416 // indirect
-	github.com/RoaringBitmap/roaring v0.4.18 // indirect
 	github.com/Shopify/sarama v1.23.1
 	github.com/abbot/go-http-auth v0.4.1-0.20181019201920-860ed7f246ff
 	github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5
 	github.com/anacrolix/envpprof v1.0.0 // indirect
 	github.com/anacrolix/missinggo v1.1.1 // indirect
 	github.com/anacrolix/sync v0.0.0-20180808010631-44578de4e778 // indirect
-	github.com/anacrolix/tagflag v1.0.0 // indirect
 	github.com/anacrolix/utp v0.0.0-20180219060659-9e0e1d1d0572
 	github.com/asim/go-awsxray v0.0.0-20161209120537-0d8a60b6e205
 	github.com/asim/go-bson v0.0.0-20160318195205-84522947cabd
@@ -34,15 +26,12 @@ require (
 	github.com/coreos/go-semver v0.3.0 // indirect
 	github.com/coreos/go-systemd v0.0.0-20190719114852-fd7a80b32e1f // indirect
 	github.com/coreos/pkg v0.0.0-20180928190104-399ea9e2e55f // indirect
-	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/eapache/go-resiliency v1.2.0 // indirect
 	github.com/eclipse/paho.mqtt.golang v1.2.0
 	github.com/franela/goblin v0.0.0-20181003173013-ead4ad1d2727 // indirect
 	github.com/franela/goreq v0.0.0-20171204163338-bcd34c9993f8 // indirect
 	github.com/garyburd/redigo v1.6.0 // indirect
 	github.com/ghodss/yaml v1.0.1-0.20190212211648-25d852aebe32 // indirect
-	github.com/glycerine/go-unsnap-stream v0.0.0-20190730064659-98d31706395a // indirect
-	github.com/glycerine/goconvey v0.0.0-20190410193231-58a59202ab31 // indirect
 	github.com/go-log/log v0.1.0
 	github.com/go-redsync/redsync v1.3.0
 	github.com/go-stomp/stomp v2.0.3+incompatible
@@ -58,8 +47,8 @@ require (
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.9.5 // indirect
 	github.com/hashicorp/go-hclog v0.9.2 // indirect
+	github.com/hashicorp/memberlist v0.1.4
 	github.com/hashicorp/raft v1.1.1 // indirect
-	github.com/hashicorp/raft-boltdb v0.0.0-20190605210249-ef2e128ed477 // indirect
 	github.com/hashicorp/vault v1.1.4
 	github.com/huandu/xstrings v1.2.0 // indirect
 	github.com/hudl/fargo v1.2.0
@@ -68,7 +57,7 @@ require (
 	github.com/juju/ratelimit v1.0.1
 	github.com/lib/pq v1.2.0 // indirect
 	github.com/micro/cli v0.2.0
-	github.com/micro/go-micro v1.10.0
+	github.com/micro/go-micro v1.11.0
 	github.com/micro/micro v1.8.0
 	github.com/minio/highwayhash v1.0.0
 	github.com/mitchellh/hashstructure v1.0.0
@@ -80,13 +69,9 @@ require (
 	github.com/nsqio/go-nsq v1.0.7
 	github.com/op/go-logging v0.0.0-20160315200505-970db520ece7
 	github.com/opentracing/opentracing-go v1.1.0
-	github.com/pierrec/lz4 v2.0.5+incompatible // indirect
 	github.com/prometheus/client_golang v1.1.0
 	github.com/prometheus/client_model v0.0.0-20190129233127-fd36f4220a90
-	github.com/prometheus/common v0.6.0 // indirect
-	github.com/prometheus/procfs v0.0.3 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20190706150252-9beb055b7962 // indirect
-	github.com/rogpeppe/fastuuid v1.2.0 // indirect
 	github.com/rs/cors v1.6.0
 	github.com/ryanuber/go-glob v1.0.0 // indirect
 	github.com/samuel/go-zookeeper v0.0.0-20180130194729-c4fab1ac1bec
@@ -98,15 +83,10 @@ require (
 	github.com/spf13/pflag v1.0.3 // indirect
 	github.com/streadway/amqp v0.0.0-20190404075320-75d898a42a94
 	github.com/stretchr/testify v1.3.0
-	github.com/tidwall/pretty v1.0.0 // indirect
 	github.com/tinylib/msgp v1.1.0
 	github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5 // indirect
-	github.com/uber-go/atomic v1.4.0 // indirect
-	github.com/uber/jaeger-client-go v2.16.0+incompatible // indirect
-	github.com/uber/jaeger-lib v2.0.0+incompatible // indirect
 	github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2 // indirect
 	go.etcd.io/bbolt v1.3.3 // indirect
-	go.mongodb.org/mongo-driver v1.0.4 // indirect
 	go.opencensus.io v0.22.0
 	go.uber.org/atomic v1.4.0 // indirect
 	go.uber.org/multierr v1.1.0 // indirect
@@ -125,6 +105,7 @@ require (
 	gopkg.in/bsm/ratelimit.v1 v1.0.0-20160220154919-db14e161995a // indirect
 	gopkg.in/gcfg.v1 v1.2.3 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
+	gopkg.in/jcmturner/goidentity.v3 v3.0.0 // indirect
 	gopkg.in/jcmturner/gokrb5.v7 v7.3.0 // indirect
 	gopkg.in/ldap.v3 v3.0.3
 	gopkg.in/redis.v3 v3.6.4
@@ -133,7 +114,6 @@ require (
 	k8s.io/client-go v11.0.1-0.20190409021438-1a26190bd76a+incompatible
 	k8s.io/klog v0.3.3 // indirect
 	k8s.io/utils v0.0.0-20190712204705-3dccf664f023 // indirect
-	pack.ag/amqp v0.12.0 // indirect
 	sigs.k8s.io/yaml v1.1.0 // indirect
 )
 
@@ -160,3 +140,5 @@ replace (
 	k8s.io/apimachinery => k8s.io/apimachinery v0.0.0-20190404173353-6a84e37a896d
 	k8s.io/client-go => k8s.io/client-go v11.0.1-0.20190409021438-1a26190bd76a+incompatible
 )
+
+go 1.13
