@@ -3,6 +3,7 @@ package googlepubsub
 
 import (
 	"context"
+	"os"
 	"time"
 
 	"cloud.google.com/go/pubsub"
@@ -229,6 +230,12 @@ func NewBroker(opts ...broker.Option) broker.Broker {
 
 	// retrieve project id
 	prjID, _ := options.Context.Value(projectIDKey{}).(string)
+
+	// if `GOOGLEPUBSUB_PROJECT_ID` is present, it will overwrite programmatically set projectID
+	if envPrjID := os.Getenv("GOOGLEPUBSUB_PROJECT_ID"); len(envPrjID) > 0 {
+		prjID = envPrjID
+	}
+
 	// retrieve client opts
 	cOpts, _ := options.Context.Value(clientOptionKey{}).([]option.ClientOption)
 
