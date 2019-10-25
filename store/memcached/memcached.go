@@ -70,7 +70,7 @@ func (m *mkv) Write(records ...*store.Record) error {
 	return nil
 }
 
-func (m *mkv) Sync() ([]*store.Record, error) {
+func (m *mkv) List() ([]*store.Record, error) {
 	// stats
 	// cachedump
 	// get keys

@@ -61,7 +61,7 @@ func (c *ckv) Write(records ...*store.Record) error {
 	return nil
 }
 
-func (c *ckv) Sync() ([]*store.Record, error) {
+func (c *ckv) List() ([]*store.Record, error) {
 	keyval, _, err := c.client.KV().List("/", nil)
 	if err != nil {
 		return nil, err
