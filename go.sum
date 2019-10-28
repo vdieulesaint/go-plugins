@@ -465,6 +465,8 @@ github.com/micro/go-micro v1.11.0 h1:yQBuxjk0JXU5XNbNMZq417JJzXmcniu1KQ7qpqAhtk8
 github.com/micro/go-micro v1.11.0/go.mod h1:IFNDLkidhgnolhx+r3Lmx73XGNFgiZ7qM7l+rg8MnU0=
 github.com/micro/go-micro v1.12.0 h1:tYKGfDd4vCoYrkY7rfNgMf9Fi810DWzWsKlI9fLiTR0=
 github.com/micro/go-micro v1.12.0/go.mod h1:dbMgBQRxpTdBZPfr+sUKZsw7oY/7pf8TaM3Ud0/sDus=
+github.com/micro/go-micro v1.14.0 h1:lptn9DBbsNCB3RC3PMwxTJGqCUgU8Rf23nAMaRuOcOA=
+github.com/micro/go-micro v1.14.0/go.mod h1:dgCyTf3scZCR1iQsbH/a/dT6VqHLN/3Uy8ioHm2qAC4=
 github.com/micro/mdns v0.3.0 h1:bYycYe+98AXR3s8Nq5qvt6C573uFTDPIYzJemWON0QE=
 github.com/micro/mdns v0.3.0/go.mod h1:KJ0dW7KmicXU2BV++qkLlmHYcVv7/hHnbtguSWt9Aoc=
 github.com/micro/micro v1.11.0 h1:z278J+c+FdG51jv6oyY5oGGj25URXLyZU6zeGgmZfRU=

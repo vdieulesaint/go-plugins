@@ -49,7 +49,7 @@ require (
 	github.com/juju/ratelimit v1.0.1
 	github.com/lib/pq v1.2.0 // indirect
 	github.com/micro/cli v0.2.0
-	github.com/micro/go-micro v1.12.0
+	github.com/micro/go-micro v1.14.0
 	github.com/micro/micro v1.11.0
 	github.com/minio/highwayhash v1.0.0
 	github.com/mitchellh/hashstructure v1.0.0
