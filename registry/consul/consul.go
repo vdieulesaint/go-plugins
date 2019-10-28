@@ -11,8 +11,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/micro/go-micro/config/cmd"
 	consul "github.com/hashicorp/consul/api"
+	"github.com/micro/go-micro/config/cmd"
 	"github.com/micro/go-micro/registry"
 	mnet "github.com/micro/go-micro/util/net"
 	hash "github.com/mitchellh/hashstructure"
@@ -37,7 +37,7 @@ type consulRegistry struct {
 }
 
 func init() {
-        cmd.DefaultRegistries["consul"] = NewRegistry
+	cmd.DefaultRegistries["consul"] = NewRegistry
 }
 
 func getDeregisterTTL(t time.Duration) time.Duration {
