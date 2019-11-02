@@ -132,10 +132,8 @@ func (s *subscriber) resubscribe() {
 		}
 		for d := range sub {
 			s.r.wg.Add(1)
-			go func(d amqp.Delivery) {
-				s.fn(d)
-				s.r.wg.Done()
-			}(d)
+			s.fn(d)
+			s.r.wg.Done()
 		}
 	}
 }
