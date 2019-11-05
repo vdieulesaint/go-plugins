@@ -49,6 +49,9 @@ func makeMap(kv map[string]string) map[string]interface{} {
 }
 
 func split(s string, sp string) (k string, v string) {
-	kv := strings.Split(s, sp)
-	return kv[0], kv[1]
+	i := strings.Index(s, sp)
+	if i == -1 {
+		return s, ""
+	}
+	return s[:i], s[i+1:]
 }

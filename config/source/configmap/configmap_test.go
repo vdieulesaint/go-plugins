@@ -88,6 +88,7 @@ func TestMakeMap(t *testing.T) {
 				"mongodb": "host=127.0.0.1\nport=27017\nuser=user\npassword=password",
 				"config":  "host=0.0.0.0\nport=1337",
 				"redis":   "url=redis://127.0.0.1:6379/db01",
+				"sql":     "username=user\npassword=password=1234",
 			},
 			dout: map[string]interface{}{
 				"mongodb": map[string]interface{}{
@@ -103,8 +104,12 @@ func TestMakeMap(t *testing.T) {
 				"redis": map[string]interface{}{
 					"url": "redis://127.0.0.1:6379/db01",
 				},
+				"sql": map[string]interface{}{
+					"username": "user",
+					"password": "password=1234",
+				},
 			},
-			jdout: []byte(`{"config":{"host":"0.0.0.0","port":"1337"},"mongodb":{"host":"127.0.0.1","password":"password","port":"27017","user":"user"},"redis":{"url":"redis://127.0.0.1:6379/db01"}}`),
+			jdout: []byte(`{"config":{"host":"0.0.0.0","port":"1337"},"mongodb":{"host":"127.0.0.1","password":"password","port":"27017","user":"user"},"redis":{"url":"redis://127.0.0.1:6379/db01"},"sql":{"password":"password=1234","username":"user"}}`),
 		},
 	}
 
