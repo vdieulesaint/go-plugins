@@ -1,5 +1,5 @@
 // Package etcd provides an etcd v3 service registry
-package etcd
+package etcdv3
 
 import (
 	"github.com/micro/go-micro/config/cmd"
@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	cmd.DefaultRegistries["etcd"] = etcd.NewRegistry
+	cmd.DefaultRegistries["etcdv3"] = etcd.NewRegistry
 }
 
 func NewRegistry(opts ...registry.Option) registry.Registry {

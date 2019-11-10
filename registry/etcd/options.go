@@ -1,4 +1,4 @@
-package etcdv3
+package etcd
 
 import (
 	"github.com/micro/go-micro/registry"
