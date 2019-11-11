@@ -12,11 +12,13 @@ replace k8s.io/client-go => k8s.io/client-go v11.0.0+incompatible
 
 replace k8s.io/component-base => k8s.io/component-base v0.0.0-20190708175518-244289f83105
 
+replace github.com/gogo/protobuf => github.com/gogo/protobuf v1.3.0
+
 require (
 	cloud.google.com/go/pubsub v1.0.1
 	github.com/DataDog/datadog-go v3.2.0+incompatible // indirect
 	github.com/Shopify/sarama v1.24.1
-	github.com/abbot/go-http-auth v0.4.0
+	github.com/abbot/go-http-auth v0.4.1-0.20181019201920-860ed7f246ff
 	github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5
 	github.com/anacrolix/sync v0.2.0 // indirect
 	github.com/anacrolix/utp v0.0.0-20180219060659-9e0e1d1d0572
