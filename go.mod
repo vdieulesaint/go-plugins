@@ -16,6 +16,7 @@ replace github.com/gogo/protobuf => github.com/gogo/protobuf v1.3.0
 
 require (
 	cloud.google.com/go/pubsub v1.0.1
+	cuelang.org/go v0.0.14
 	github.com/DataDog/datadog-go v3.2.0+incompatible // indirect
 	github.com/Shopify/sarama v1.24.1
 	github.com/abbot/go-http-auth v0.4.1-0.20181019201920-860ed7f246ff
@@ -30,6 +31,7 @@ require (
 	github.com/clbanning/x2j v0.0.0-20191024224557-825249438eec // indirect
 	github.com/eclipse/paho.mqtt.golang v1.2.0
 	github.com/franela/goreq v0.0.0-20171204163338-bcd34c9993f8 // indirect
+	github.com/ghodss/yaml v1.0.0
 	github.com/go-log/log v0.1.0
 	github.com/go-redsync/redsync v1.3.1
 	github.com/go-stomp/stomp v2.0.3+incompatible
