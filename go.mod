@@ -45,6 +45,7 @@ require (
 	github.com/hashicorp/vault/api v1.0.4
 	github.com/hudl/fargo v1.3.0
 	github.com/juju/ratelimit v1.0.1
+	github.com/markbates/pkger v0.12.4
 	github.com/micro/cli v0.2.0
 	github.com/micro/go-micro v1.16.0
 	github.com/micro/micro v1.16.0
