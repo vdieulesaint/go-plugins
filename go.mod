@@ -30,7 +30,9 @@ require (
 	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
 	github.com/clbanning/x2j v0.0.0-20191024224557-825249438eec // indirect
 	github.com/eclipse/paho.mqtt.golang v1.2.0
+	github.com/franela/goblin v0.0.0-20181003173013-ead4ad1d2727 // indirect
 	github.com/franela/goreq v0.0.0-20171204163338-bcd34c9993f8 // indirect
+	github.com/garyburd/redigo v1.6.0 // indirect
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-log/log v0.1.0
 	github.com/go-redsync/redsync v1.3.1
@@ -51,6 +53,7 @@ require (
 	github.com/micro/micro v1.16.0
 	github.com/minio/highwayhash v1.0.0
 	github.com/mitchellh/hashstructure v1.0.0
+	github.com/nats-io/nats-streaming-server v0.16.2 // indirect
 	github.com/nats-io/nats.go v1.9.1
 	github.com/nats-io/stan.go v0.5.0
 	github.com/nsqio/go-nsq v1.0.7
