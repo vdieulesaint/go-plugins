@@ -159,23 +159,21 @@ func (zw *zookeeperWatcher) watchKey(key string) {
 }
 
 func (zw *zookeeperWatcher) watch() {
-	watchPath := prefix
-	if len(zw.wo.Service) > 0 {
-		watchPath = servicePath(zw.wo.Service)
-	}
 
-	//get all Services
-	services, _, err := zw.client.Children(watchPath)
-	if err != nil {
-		zw.results <- result{nil, err}
+	services := func() []string {
+		if len(zw.wo.Service) > 0 {
+			return []string{zw.wo.Service}
+		}
+		allServices, _, err := zw.client.Children(prefix)
+		if err != nil {
+			zw.results <- result{nil, err}
+		}
+		return allServices
 	}
-
-	//watch the prefix for new child nodes
-	go zw.watchDir(watchPath)
 
 	//watch every service
-	for _, service := range services {
-		sPath := childPath(watchPath, service)
+	for _, service := range services() {
+		sPath := childPath(prefix, service)
 		go zw.watchDir(sPath)
 		children, _, err := zw.client.Children(sPath)
 		if err != nil {
@@ -194,7 +192,7 @@ func (zw *zookeeperWatcher) watch() {
 			return
 		case rsp := <-zw.respChan:
 			if rsp.err != nil {
-				zw.results <- result{nil, err}
+				zw.results <- result{nil, rsp.err}
 				continue
 			}
 			switch rsp.event.Type {
