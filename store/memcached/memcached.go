@@ -21,7 +21,7 @@ type mkv struct {
 }
 
 func (m *mkv) Read(keys ...string) ([]*store.Record, error) {
-	var records []*store.Record
+	records := make([]*store.Record, 0, len(keys))
 
 	for _, key := range keys {
 		keyval, err := m.Client.Get(key)

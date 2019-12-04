@@ -94,6 +94,9 @@ func (zw *zookeeperWatcher) watchDir(key string) {
 						n := path.Join(newNode, node)
 						go zw.watchKey(n)
 						s, _, err := zw.client.Get(n)
+						if err != nil {
+							continue
+						}
 						e.Type = zk.EventNodeCreated
 
 						srv, err := decode(s)
@@ -106,6 +109,9 @@ func (zw *zookeeperWatcher) watchDir(key string) {
 				} else {
 					go zw.watchKey(newNode)
 					s, _, err := zw.client.Get(newNode)
+					if err != nil {
+						continue
+					}
 					e.Type = zk.EventNodeCreated
 
 					srv, err := decode(s)
@@ -138,6 +144,9 @@ func (zw *zookeeperWatcher) watchKey(key string) {
 				if e.Type != zk.EventNodeDeleted {
 					// get the updated service
 					s, _, err = zw.client.Get(e.Path)
+					if err != nil {
+						continue
+					}
 				}
 
 				srv, err := decode(s)
