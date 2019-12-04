@@ -16,7 +16,7 @@ type ckv struct {
 }
 
 func (c *ckv) Read(keys ...string) ([]*store.Record, error) {
-	var records []*store.Record
+	records := make([]*store.Record, 0, len(keys))
 
 	for _, key := range keys {
 		keyval, _, err := c.client.KV().Get(key, nil)

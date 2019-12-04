@@ -19,6 +19,7 @@ require (
 	cuelang.org/go v0.0.14
 	github.com/DataDog/datadog-go v3.2.0+incompatible // indirect
 	github.com/Shopify/sarama v1.24.1
+	github.com/VictoriaMetrics/metrics v1.9.2
 	github.com/abbot/go-http-auth v0.4.1-0.20181019201920-860ed7f246ff
 	github.com/afex/hystrix-go v0.0.0-20180502004556-fa1af6a1f4f5
 	github.com/anacrolix/sync v0.2.0 // indirect
