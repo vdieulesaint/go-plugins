@@ -212,7 +212,7 @@ func (z *zookeeperRegistry) GetService(name string) ([]*registry.Service, error)
 		}
 	}
 
-	services := make([]*registry.Service, len(serviceMap))
+	services := make([]*registry.Service, 0, len(serviceMap))
 
 	for _, service := range serviceMap {
 		services = append(services, service)
