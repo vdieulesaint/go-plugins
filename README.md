@@ -38,14 +38,25 @@ Contents of this repository:
 
 Plugins can be added to go-micro in the following ways. By doing so they'll be available to set via command line args or environment variables.
 
-Import the plugins in a Go program then call service.Init to parse the command line and environment variables.
+Import the plugins in a `plugins.go` file
 
 ```go
+package main
+
 import (
-	"github.com/micro/go-micro"
 	_ "github.com/micro/go-plugins/broker/rabbitmq"
 	_ "github.com/micro/go-plugins/registry/kubernetes"
 	_ "github.com/micro/go-plugins/transport/nats"
+)
+```
+
+Create your service and ensure you call `service.Init`
+
+```go
+package main
+
+import (
+	"github.com/micro/go-micro"
 )
 
 func main() {
@@ -59,23 +70,29 @@ func main() {
 }
 ```
 
-### Flags
+Build your service
 
-Specify the plugins as flags
-
-```shell
-go run service.go --broker=rabbitmq --registry=kubernetes --transport=nats
+```
+go build -o service ./main.go ./plugins.go
 ```
 
 ### Env
 
-Use env vars to specify the plugins
+Use environment variables to set the
 
 ```
 MICRO_BROKER=rabbitmq \
 MICRO_REGISTRY=kubernetes \ 
 MICRO_TRANSPORT=nats \ 
-go run service.go
+./service
+```
+
+### Flags
+
+Or use command line flags to enable them
+
+```shell
+./service --broker=rabbitmq --registry=kubernetes --transport=nats
 ```
 
 ### Options
