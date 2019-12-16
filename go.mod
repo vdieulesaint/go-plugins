@@ -50,8 +50,8 @@ require (
 	github.com/juju/ratelimit v1.0.1
 	github.com/markbates/pkger v0.12.4
 	github.com/micro/cli v0.2.0
-	github.com/micro/go-micro v1.16.0
-	github.com/micro/micro v1.16.0
+	github.com/micro/go-micro v1.18.1-0.20191216151820-1ea6390eaedd
+	github.com/micro/micro v1.18.1-0.20191216152715-bc3ebd75c9ff
 	github.com/minio/highwayhash v1.0.0
 	github.com/mitchellh/hashstructure v1.0.0
 	github.com/nats-io/nats-streaming-server v0.16.2 // indirect
@@ -74,8 +74,8 @@ require (
 	go.uber.org/ratelimit v0.1.0
 	gocloud.dev v0.17.0
 	gocloud.dev/pubsub/rabbitpubsub v0.17.0
-	golang.org/x/net v0.0.0-20191109021931-daa7c04131f5
-	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
+	golang.org/x/net v0.0.0-20191209160850-c0dbc17a3553
+	golang.org/x/oauth2 v0.0.0-20191202225959-858c2ad4c8b6
 	golang.org/x/text v0.3.2
 	google.golang.org/api v0.13.0
 	google.golang.org/genproto v0.0.0-20191108220845-16a3f7862a1a
