@@ -37,6 +37,42 @@ conf.Get("mongodb", "host") // 127.0.0.1
 conf.Get("mongodb", "port") // 27017
 ```
 
+## Kubernetes wrights
+
+Since Kubernetes 1.9 the app must have wrights to be able to access configmaps. You must provide Role and RoleBinding so that your app can access configmaps.
+
+```yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: api-role
+  labels:
+    app: tools-rbac
+rules:
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["get", "update", "list", "watch"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: global-rolebinding
+  labels:
+    app: tools-rbac
+subjects:
+- kind: Group
+  name: system:serviceaccounts
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: api-role
+  apiGroup: ""
+```
+To configure your Kubernetes cluster just apply the file:
+```bash
+kubectl apply -n YourNameSpace -f role.yaml
+```
+
 ## New Source
 
 Specify source with data

@@ -5,7 +5,7 @@ import (
 	"github.com/micro/go-micro/broker"
 )
 
-// mqttPub is a broker.Publication
+// mqttPub is a broker.Event
 type mqttPub struct {
 	topic string
 	msg   *broker.Message

@@ -36,14 +36,14 @@ func serviceDef(opts server.Options) *registry.Service {
 
 	node := &registry.Node{
 		Id:       opts.Name + "-" + opts.Id,
-		Address:  addr,
-		Port:     port,
+		Address:  fmt.Sprintf("%s:%d", addr, port),
 		Metadata: opts.Metadata,
 	}
 
 	node.Metadata["server"] = "http"
 	node.Metadata["broker"] = opts.Broker.String()
 	node.Metadata["registry"] = opts.Registry.String()
+	node.Metadata["protocol"] = "http"
 
 	return &registry.Service{
 		Name:    opts.Name,

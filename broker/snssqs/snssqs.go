@@ -48,7 +48,7 @@ type subscriber struct {
 }
 
 // A wrapper around an SQS message published on an SQS queue and delivered via subscriber
-type sqsPublication struct {
+type sqsEvent struct {
 	sMessage  *sqs.Message
 	svc       *sqs.SQS
 	m         *broker.Message
@@ -131,7 +131,7 @@ func (s *subscriber) handleMessage(msg *sqs.Message, hdlr broker.Handler) {
 		Body:   []byte(*msg.Body),
 	}
 
-	p := &sqsPublication{
+	p := &sqsEvent{
 		sMessage:  msg,
 		m:         m,
 		URL:       s.URL,
@@ -168,7 +168,7 @@ func (s *subscriber) Unsubscribe() error {
 	}
 }
 
-func (p *sqsPublication) Ack() error {
+func (p *sqsEvent) Ack() error {
 	_, err := p.svc.DeleteMessage(&sqs.DeleteMessageInput{
 		QueueUrl:      &p.URL,
 		ReceiptHandle: p.sMessage.ReceiptHandle,
@@ -176,11 +176,11 @@ func (p *sqsPublication) Ack() error {
 	return err
 }
 
-func (p *sqsPublication) Topic() string {
+func (p *sqsEvent) Topic() string {
 	return p.queueName
 }
 
-func (p *sqsPublication) Message() *broker.Message {
+func (p *sqsEvent) Message() *broker.Message {
 	return p.m
 }
 
@@ -201,11 +201,17 @@ func (b *awsServices) Connect() error {
 
 	b.sess = session.Must(session.NewSessionWithOptions(session.Options{
 		SharedConfigState: session.SharedConfigEnable,
+		Config:            aws.Config{},
 	}))
 
-	b.svcSqs = sqs.New(b.sess)
-	b.svcSns = sns.New(b.sess)
-	svcSts := sts.New(b.sess)
+	sqsConfig := b.getSQSConfig()
+	b.svcSqs = sqs.New(b.sess, sqsConfig)
+
+	snsConfig := b.getSNSConfig()
+	b.svcSns = sns.New(b.sess, snsConfig)
+
+	stsConfig := b.getSTSConfig()
+	svcSts := sts.New(b.sess, stsConfig)
 
 	input := &sts.GetCallerIdentityInput{}
 
@@ -398,6 +404,30 @@ func (b *awsServices) getAwsClient() *session.Session {
 	if raw != nil {
 		s := raw.(*session.Session)
 		return s
+	}
+	return nil
+}
+
+func (b *awsServices) getSNSConfig() *aws.Config {
+	raw := b.options.Context.Value(snsConfigKey{})
+	if raw != nil {
+		return raw.(*aws.Config)
+	}
+	return nil
+}
+
+func (b *awsServices) getSQSConfig() *aws.Config {
+	raw := b.options.Context.Value(sqsConfigKey{})
+	if raw != nil {
+		return raw.(*aws.Config)
+	}
+	return nil
+}
+
+func (b *awsServices) getSTSConfig() *aws.Config {
+	raw := b.options.Context.Value(stsConfigKey{})
+	if raw != nil {
+		return raw.(*aws.Config)
 	}
 	return nil
 }

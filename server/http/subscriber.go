@@ -55,7 +55,6 @@ func isExportedOrBuiltinType(t reflect.Type) bool {
 }
 
 func newSubscriber(topic string, sub interface{}, opts ...server.SubscriberOption) server.Subscriber {
-
 	options := server.SubscriberOptions{
 		AutoAck: true,
 	}
@@ -187,7 +186,7 @@ func validateSubscriber(sub server.Subscriber) error {
 }
 
 func (s *httpServer) createSubHandler(sb *httpSubscriber, opts server.Options) broker.Handler {
-	return func(p broker.Publication) error {
+	return func(p broker.Event) error {
 		msg := p.Message()
 		ct := msg.Header["Content-Type"]
 		cf, err := s.newCodec(ct)
@@ -224,7 +223,7 @@ func (s *httpServer) createSubHandler(sb *httpSubscriber, opts server.Options) b
 			co := cf(b)
 			defer co.Close()
 
-			if err := co.ReadHeader(&codec.Message{}, codec.Publication); err != nil {
+			if err := co.ReadHeader(&codec.Message{}, codec.Event); err != nil {
 				return err
 			}
 
@@ -259,6 +258,9 @@ func (s *httpServer) createSubHandler(sb *httpSubscriber, opts server.Options) b
 					topic:       sb.topic,
 					contentType: ct,
 					payload:     req.Interface(),
+					header:      msg.Header,
+					body:        msg.Body,
+					codec:       co,
 				})
 			}()
 		}

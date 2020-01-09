@@ -8,7 +8,6 @@ import (
 	"io/ioutil"
 	"net"
 	"net/http"
-	"strconv"
 	"testing"
 
 	"github.com/micro/go-micro/client"
@@ -68,19 +67,15 @@ func TestHTTPClient(t *testing.T) {
 	})
 	go http.Serve(l, mux)
 
-	host, sport, err := net.SplitHostPort(l.Addr().String())
-	if err != nil {
-		t.Fatal(err)
-	}
-	port, _ := strconv.Atoi(sport)
-
 	if err := r.Register(&registry.Service{
 		Name: "test.service",
 		Nodes: []*registry.Node{
 			{
 				Id:      "test.service.1",
-				Address: host,
-				Port:    port,
+				Address: l.Addr().String(),
+				Metadata: map[string]string{
+					"protocol": "http",
+				},
 			},
 		},
 	}); err != nil {
@@ -231,19 +226,15 @@ func TestHTTPClientStream(t *testing.T) {
 	})
 	go http.Serve(l, mux)
 
-	host, sport, err := net.SplitHostPort(l.Addr().String())
-	if err != nil {
-		t.Fatal(err)
-	}
-	port, _ := strconv.Atoi(sport)
-
 	if err := r.Register(&registry.Service{
 		Name: "test.service",
 		Nodes: []*registry.Node{
 			{
 				Id:      "test.service.1",
-				Address: host,
-				Port:    port,
+				Address: l.Addr().String(),
+				Metadata: map[string]string{
+					"protocol": "http",
+				},
 			},
 		},
 	}); err != nil {

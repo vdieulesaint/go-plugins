@@ -10,6 +10,7 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+	"os"
 	"sync"
 	"time"
 
@@ -17,6 +18,7 @@ import (
 	"github.com/micro/go-micro/client"
 	"github.com/micro/go-micro/client/selector"
 	"github.com/micro/go-micro/codec"
+	raw "github.com/micro/go-micro/codec/bytes"
 	"github.com/micro/go-micro/config/cmd"
 	errors "github.com/micro/go-micro/errors"
 	"github.com/micro/go-micro/metadata"
@@ -34,17 +36,37 @@ func init() {
 }
 
 func (h *httpClient) next(request client.Request, opts client.CallOptions) (selector.Next, error) {
+	service := request.Service()
+
+	// get proxy
+	if prx := os.Getenv("MICRO_PROXY"); len(prx) > 0 {
+		service = prx
+	}
+
+	// get proxy address
+	if prx := os.Getenv("MICRO_PROXY_ADDRESS"); len(prx) > 0 {
+		opts.Address = []string{prx}
+	}
+
 	// return remote address
 	if len(opts.Address) > 0 {
 		return func() (*registry.Node, error) {
 			return &registry.Node{
-				Address: opts.Address,
+				Address: opts.Address[0],
+				Metadata: map[string]string{
+					"protocol": "http",
+				},
 			}, nil
 		}, nil
 	}
 
+	// only get the things that are of mucp protocol
+	selectOptions := append(opts.SelectOptions, selector.WithFilter(
+		selector.FilterLabel("protocol", "http"),
+	))
+
 	// get next nodes from the selector
-	next, err := h.opts.Selector.Select(request.Service(), opts.SelectOptions...)
+	next, err := h.opts.Selector.Select(service, selectOptions...)
 	if err != nil && err == selector.ErrNotFound {
 		return nil, errors.NotFound("go.micro.client", err.Error())
 	} else if err != nil {
@@ -57,10 +79,6 @@ func (h *httpClient) next(request client.Request, opts client.CallOptions) (sele
 func (h *httpClient) call(ctx context.Context, node *registry.Node, req client.Request, rsp interface{}, opts client.CallOptions) error {
 	// set the address
 	address := node.Address
-	if node.Port > 0 {
-		address = fmt.Sprintf("%s:%d", address, node.Port)
-	}
-
 	header := make(http.Header)
 	if md, ok := metadata.FromContext(ctx); ok {
 		for k, v := range md {
@@ -125,10 +143,6 @@ func (h *httpClient) call(ctx context.Context, node *registry.Node, req client.R
 func (h *httpClient) stream(ctx context.Context, node *registry.Node, req client.Request, opts client.CallOptions) (client.Stream, error) {
 	// set the address
 	address := node.Address
-	if node.Port > 0 {
-		address = fmt.Sprintf("%s:%d", address, node.Port)
-	}
-
 	header := make(http.Header)
 	if md, ok := metadata.FromContext(ctx); ok {
 		for k, v := range md {
@@ -351,11 +365,6 @@ func (h *httpClient) Stream(ctx context.Context, req client.Request, opts ...cli
 			return nil, errors.InternalServerError("go.micro.client", err.Error())
 		}
 
-		addr := node.Address
-		if node.Port > 0 {
-			addr = fmt.Sprintf("%s:%d", addr, node.Port)
-		}
-
 		stream, err := h.stream(ctx, node, req, callOpts)
 		h.opts.Selector.Mark(req.Service(), node, err)
 		return stream, err
@@ -401,29 +410,57 @@ func (h *httpClient) Stream(ctx context.Context, req client.Request, opts ...cli
 }
 
 func (h *httpClient) Publish(ctx context.Context, p client.Message, opts ...client.PublishOption) error {
+	options := client.PublishOptions{
+		Context: context.Background(),
+	}
+	for _, o := range opts {
+		o(&options)
+	}
+
 	md, ok := metadata.FromContext(ctx)
 	if !ok {
 		md = make(map[string]string)
 	}
 	md["Content-Type"] = p.ContentType()
+	md["Micro-Topic"] = p.Topic()
 
 	cf, err := h.newCodec(p.ContentType())
 	if err != nil {
 		return errors.InternalServerError("go.micro.client", err.Error())
 	}
 
-	b := &buffer{bytes.NewBuffer(nil)}
-	if err := cf(b).Write(&codec.Message{Type: codec.Publication}, p.Payload()); err != nil {
-		return errors.InternalServerError("go.micro.client", err.Error())
+	var body []byte
+
+	// passed in raw data
+	if d, ok := p.Payload().(*raw.Frame); ok {
+		body = d.Data
+	} else {
+		b := &buffer{bytes.NewBuffer(nil)}
+		if err := cf(b).Write(&codec.Message{Type: codec.Event}, p.Payload()); err != nil {
+			return errors.InternalServerError("go.micro.client", err.Error())
+		}
+		body = b.Bytes()
 	}
 
 	h.once.Do(func() {
 		h.opts.Broker.Connect()
 	})
 
-	return h.opts.Broker.Publish(p.Topic(), &broker.Message{
+	topic := p.Topic()
+
+	// get proxy
+	if prx := os.Getenv("MICRO_PROXY"); len(prx) > 0 {
+		options.Exchange = prx
+	}
+
+	// get the exchange
+	if len(options.Exchange) > 0 {
+		topic = options.Exchange
+	}
+
+	return h.opts.Broker.Publish(topic, &broker.Message{
 		Header: md,
-		Body:   b.Bytes(),
+		Body:   body,
 	})
 }
 

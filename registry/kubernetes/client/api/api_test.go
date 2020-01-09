@@ -47,7 +47,7 @@ var tests = []testcase{
 			return NewRequest(opts).Get().Resource("pods").Params(&Params{LabelSelector: map[string]string{"foo": "bar"}})
 		},
 		Method: "GET",
-		URI:    "/api/v1/namespaces/default/pods/?labelSelectors=foo%3Dbar",
+		URI:    "/api/v1/namespaces/default/pods/?labelSelector=foo%3Dbar",
 	},
 	testcase{
 		ReqFn: func(opts *Options) *Request {

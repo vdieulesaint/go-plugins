@@ -132,10 +132,8 @@ func (s *subscriber) resubscribe() {
 		}
 		for d := range sub {
 			s.r.wg.Add(1)
-			go func(d amqp.Delivery) {
-				s.fn(d)
-				s.r.wg.Done()
-			}(d)
+			s.fn(d)
+			s.r.wg.Done()
 		}
 	}
 }
@@ -193,10 +191,10 @@ func (r *rbroker) Subscribe(topic string, handler broker.Handler, opts ...broker
 		ctx = subscribeContext
 	}
 
-	requeueOnError := false
+	var requeueOnError bool
 	requeueOnError, _ = ctx.Value(requeueOnErrorKey{}).(bool)
 
-	durableQueue := false
+	var durableQueue bool
 	durableQueue, _ = ctx.Value(durableQueueKey{}).(bool)
 
 	var qArgs map[string]interface{}

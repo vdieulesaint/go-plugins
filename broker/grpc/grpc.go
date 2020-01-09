@@ -55,7 +55,7 @@ type grpcSubscriber struct {
 	hb    *grpcBroker
 }
 
-type grpcPublication struct {
+type grpcEvent struct {
 	m *broker.Message
 	t string
 }
@@ -120,15 +120,15 @@ func newGRPCBroker(opts ...broker.Option) broker.Broker {
 	return h
 }
 
-func (h *grpcPublication) Ack() error {
+func (h *grpcEvent) Ack() error {
 	return nil
 }
 
-func (h *grpcPublication) Message() *broker.Message {
+func (h *grpcEvent) Message() *broker.Message {
 	return h.m
 }
 
-func (h *grpcPublication) Topic() string {
+func (h *grpcEvent) Topic() string {
 	return h.t
 }
 
@@ -155,7 +155,7 @@ func (h *grpcHandler) Publish(ctx context.Context, msg *proto.Message) (*proto.E
 		Body:   msg.Body,
 	}
 
-	p := &grpcPublication{m: m, t: msg.Topic}
+	p := &grpcEvent{m: m, t: msg.Topic}
 
 	h.g.RLock()
 	for _, subscriber := range h.g.subscribers[msg.Topic] {
@@ -430,7 +430,7 @@ func (h *grpcBroker) Publish(topic string, msg *broker.Message, opts ...broker.P
 		}
 
 		// dial grpc connection
-		c, err := grpc.Dial(fmt.Sprintf("%s:%d", node.Address, node.Port), opts...)
+		c, err := grpc.Dial(node.Address, opts...)
 		if err != nil {
 			log.Logf(err.Error())
 			return
@@ -490,8 +490,7 @@ func (h *grpcBroker) Subscribe(topic string, handler broker.Handler, opts ...bro
 	// register service
 	node := &registry.Node{
 		Id:      id,
-		Address: addr,
-		Port:    port,
+		Address: fmt.Sprintf("%s:%d", addr, port),
 		Metadata: map[string]string{
 			"secure": fmt.Sprintf("%t", secure),
 		},

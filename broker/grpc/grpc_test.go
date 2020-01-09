@@ -35,7 +35,7 @@ func sub(be *testing.B, c int) {
 	done := make(chan bool, c)
 
 	for i := 0; i < c; i++ {
-		sub, err := b.Subscribe(topic, func(p broker.Publication) error {
+		sub, err := b.Subscribe(topic, func(p broker.Event) error {
 			done <- true
 			m := p.Message()
 
@@ -92,7 +92,7 @@ func pub(be *testing.B, c int) {
 
 	done := make(chan bool, c*4)
 
-	sub, err := b.Subscribe(topic, func(p broker.Publication) error {
+	sub, err := b.Subscribe(topic, func(p broker.Event) error {
 		done <- true
 		m := p.Message()
 		if string(m.Body) != string(msg.Body) {
@@ -160,7 +160,7 @@ func TestBroker(t *testing.T) {
 
 	done := make(chan bool)
 
-	sub, err := b.Subscribe("test", func(p broker.Publication) error {
+	sub, err := b.Subscribe("test", func(p broker.Event) error {
 		m := p.Message()
 
 		if string(m.Body) != string(msg.Body) {
@@ -209,7 +209,7 @@ func TestConcurrentSubBroker(t *testing.T) {
 	var wg sync.WaitGroup
 
 	for i := 0; i < 10; i++ {
-		sub, err := b.Subscribe("test", func(p broker.Publication) error {
+		sub, err := b.Subscribe("test", func(p broker.Event) error {
 			defer wg.Done()
 
 			m := p.Message()
@@ -264,7 +264,7 @@ func TestConcurrentPubBroker(t *testing.T) {
 
 	var wg sync.WaitGroup
 
-	sub, err := b.Subscribe("test", func(p broker.Publication) error {
+	sub, err := b.Subscribe("test", func(p broker.Event) error {
 		defer wg.Done()
 
 		m := p.Message()
