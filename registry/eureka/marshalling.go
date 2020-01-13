@@ -90,22 +90,9 @@ func serviceToInstance(service *registry.Service) (*fargo.Instance, error) {
 			return i.InstanceId
 		},
 		DataCenterInfo: fargo.DataCenterInfo{Name: fargo.MyOwn},
-	}
-
-	// set version
-	instance.SetMetadataString("version", service.Version)
-
-	// set instance ID
-	instance.SetMetadataString("instanceId", node.Id)
-
-	// set endpoints
-	if b, err := json.Marshal(service.Endpoints); err == nil {
-		instance.SetMetadataString("endpoints", string(b))
-	}
-
-	// set metadata
-	if b, err := json.Marshal(node.Metadata); err == nil {
-		instance.SetMetadataString("metadata", string(b))
+		HomePageUrl:    fmt.Sprintf("http://%s:%d/", host, port),
+		StatusPageUrl:  fmt.Sprintf("http://%s:%d/info", host, port),
+		HealthCheckUrl: fmt.Sprintf("http://%s:%d/health", host, port),
 	}
 
 	return instance, nil
