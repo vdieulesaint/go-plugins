@@ -80,8 +80,8 @@ func serviceToInstance(service *registry.Service) (*fargo.Instance, error) {
 	instance := &fargo.Instance{
 		InstanceId:       fmt.Sprintf("%s:%s:%d", host, service.Name, port),
 		App:              service.Name,
-		HostName:         node.Address,
-		IPAddr:           node.Address,
+		HostName:         host,
+		IPAddr:           host,
 		VipAddress:       service.Name,
 		SecureVipAddress: service.Name,
 		Port:             port,
