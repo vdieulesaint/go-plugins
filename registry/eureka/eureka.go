@@ -134,7 +134,7 @@ func (e *eurekaRegistry) String() string {
 }
 
 func (e *eurekaRegistry) instanceRegistered(instance *fargo.Instance) bool {
-	_, err := e.conn.GetInstance(instance.App, instance.UniqueID(*instance))
+	_, err := e.conn.GetInstance(instance.App, instance.InstanceId)
 	return err == nil
 }
 
