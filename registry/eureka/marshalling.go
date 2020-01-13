@@ -87,7 +87,7 @@ func serviceToInstance(service *registry.Service) (*fargo.Instance, error) {
 		Port:             port,
 		Status:           fargo.UP,
 		UniqueID: func(i fargo.Instance) string {
-			return fmt.Sprintf("%s:%s", node.Address, node.Id)
+			return i.InstanceId
 		},
 		DataCenterInfo: fargo.DataCenterInfo{Name: fargo.MyOwn},
 	}
